@@ -15,7 +15,7 @@
     "codegen-android": "cd ./android && ./gradlew generateCodegenArtifactsFromSchema",
     "android:check-16kb": "cd ./android && ./gradlew check16KbPageAlignment",
     "pod-reinstall": "cd ./ios && rm -rf ~/Library/Caches/CocoaPods && rm -rf Pods && bundle exec pod install --repo-update && cd ..",
-    "postinstall": "patch-package",
+    "postinstall": "patch-package && git config core.hooksPath .githooks",
     "reinstall": "yarn install --immutable && yarn pod-reinstall && yarn codegen-android",
     "format:check": "prettier --check ."
   },
