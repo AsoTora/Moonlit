@@ -4660,7 +4660,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sbaiahmed1/react-native-blur@npm:^6.0.0":
+"@sbaiahmed1/react-native-blur@npm:6.0.0":
   version: 6.0.0
   resolution: "@sbaiahmed1/react-native-blur@npm:6.0.0"
   peerDependencies:
@@ -5586,7 +5586,7 @@ __metadata:
     "@react-navigation/native": "npm:^7.5.1"
     "@react-navigation/stack": "npm:^7.12.1"
     "@reduxjs/toolkit": "npm:^2.13.0"
-    "@sbaiahmed1/react-native-blur": "npm:^6.0.0"
+    "@sbaiahmed1/react-native-blur": "npm:6.0.0"
     "@testing-library/react-native": "npm:^14.1.0"
     "@types/jest": "npm:^30.0.0"
     "@types/lodash": "npm:^4.17.27"
@@ -5624,7 +5624,7 @@ __metadata:
     react-native: "npm:0.87.0"
     react-native-adapty: "npm:^4.2.3"
     react-native-adjust: "npm:^5.8.0"
-    react-native-config: "npm:^1.6.1"
+    react-native-config: "npm:1.7.2"
     react-native-dialog: "npm:^9.3.0"
     react-native-email-link: "npm:^1.16.1"
     react-native-fs: "npm:^2.20.0"
@@ -11459,7 +11459,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-config@npm:^1.6.1":
+"react-native-config@npm:1.7.2":
   version: 1.7.2
   resolution: "react-native-config@npm:1.7.2"
   peerDependencies:
