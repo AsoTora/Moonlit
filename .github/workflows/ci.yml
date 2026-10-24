@@ -3,7 +3,6 @@ name: Check mobile application
 on:
   pull_request:
   push:
-    branches: [main]
 
 permissions:
   contents: read
