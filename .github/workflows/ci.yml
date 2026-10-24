@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   javascript:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       YARN_TASK_POOL_CONCURRENCY: 1
     steps:
