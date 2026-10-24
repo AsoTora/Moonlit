@@ -23,5 +23,5 @@ jobs:
         run: cp .github/fixtures/auth.ts src/constants/auth.ts
       - run: yarn tsc
       - run: yarn lint
-      - run: yarn test --runInBand
+      - run: yarn test --runInBand --no-cache
       - run: yarn format:check
