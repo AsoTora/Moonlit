@@ -17,6 +17,7 @@ jobs:
     timeout-minutes: 90
     env:
       MAESTRO_VERSION: 2.12.1
+      MAESTRO_DRIVER_STARTUP_TIMEOUT: 300000
       YARN_TASK_POOL_CONCURRENCY: 1
     steps:
       - uses: actions/checkout@v7.0.1
@@ -30,23 +31,34 @@ jobs:
           pod --version
           java -version
           xcrun simctl list runtimes
-      - uses: actions/cache@v6.1.0
+      - name: Restore native build caches
+        id: native-cache
+        uses: actions/cache/restore@v6.1.0
         with:
           path: |
             ios/Pods
+            ios/build
             ~/Library/Caches/ReactNative
             ~/Library/Caches/CocoaPods
-          key: pods-${{ runner.os }}-${{ hashFiles('ios/Podfile.lock', 'yarn.lock') }}
-      - uses: actions/cache@v6.1.0
-        with:
-          path: ios/build/SourcePackages
-          key: spm-${{ runner.os }}-${{ hashFiles('ios/AIVoice.xcworkspace/xcshareddata/swiftpm/Package.resolved', 'ios/Podfile.lock') }}
+          key: ios-${{ hashFiles('ios/Podfile.lock', 'yarn.lock', 'ios/AIVoice.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}-${{ github.sha }}
+          restore-keys: |
+            ios-${{ hashFiles('ios/Podfile.lock', 'yarn.lock', 'ios/AIVoice.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}-
       - name: Install Maestro
         run: |
           curl -fsSL "https://get.maestro.mobile.dev" | bash
           echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
       - name: Build the app and run the listener journeys
         run: e2e/run-ios.sh all
+      - name: Save native build caches
+        if: always() && steps.native-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6.1.0
+        with:
+          path: |
+            ios/Pods
+            ios/build
+            ~/Library/Caches/ReactNative
+            ~/Library/Caches/CocoaPods
+          key: ${{ steps.native-cache.outputs.cache-primary-key }}
       - name: Upload Maestro artifacts
         if: always()
         uses: actions/upload-artifact@v7.0.2
