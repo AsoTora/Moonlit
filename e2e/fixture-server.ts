@@ -13,7 +13,7 @@ interface ControlRequest {
 }
 
 const PORT = 4010;
-const AUDIO_SECONDS = 60;
+const AUDIO_SECONDS = 600;
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const COVER = readFileSync(join(ROOT, 'images/logo.png'));
 const TIMESTAMP = '2026-11-01T00:00:00.000Z';

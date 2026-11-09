@@ -8,7 +8,7 @@ appId: com.moonlit
 - extendedWaitUntil:
     visible:
       id: player-elapsed
-      text: '00:0[3-9]|00:[1-5][0-9]'
+      text: '00:0[3-9]|00:[1-5][0-9]|0[1-9]:[0-5][0-9]'
     timeout: 20000
 - tapOn:
     id: player-pause
