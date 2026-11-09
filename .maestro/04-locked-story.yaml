@@ -5,12 +5,16 @@ tags:
 ---
 - runFlow: subflows/onboard.yaml
 - extendedWaitUntil:
-    visible: '.*Locked Fixture Tale.*'
+    visible: '.*Free Fixture Tale.*'
     timeout: 30000
+- scrollUntilVisible:
+    element: '.*Locked Fixture Tale.*'
+    direction: DOWN
+    timeout: 20000
 - tapOn: '.*Locked Fixture Tale.*'
 - runFlow: subflows/wait-3s.yaml
 - assertNotVisible: Listen Story
-- assertVisible: '.*Free Fixture Tale.*'
+- assertVisible: '.*Locked Fixture Tale.*'
 - takeScreenshot: 04-locked-story-not-opened
 - runFlow: subflows/fixture-requests.yaml
 - assertTrue:

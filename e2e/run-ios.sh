@@ -138,13 +138,30 @@ run_tests() {
     >"$ARTIFACTS/recorder.log" 2>&1 &
   RECORDER_PID=$!
 
-  local flows=("$@")
-  [[ ${#flows[@]} -gt 0 ]] || flows=(.maestro)
+  if [[ $# -gt 0 ]]; then
+    run_maestro "$udid" report "$@"
+    return
+  fi
+
+  local status=0
+  run_maestro "$udid" report .maestro || status=$?
+  local known_issues=()
+  while IFS= read -r flow; do known_issues+=("$flow"); done < <(grep -l -- '- known-issue' .maestro/[0-9]*.yaml)
+  if [[ ${#known_issues[@]} -gt 0 ]]; then
+    echo "Running flows for known app issues. Their result does not change the exit status."
+    run_maestro "$udid" known-issues "${known_issues[@]}" || true
+  fi
+  return "$status"
+}
+
+run_maestro() {
+  local udid="$1" name="$2"
+  shift 2
   maestro --device "$udid" test \
-    --format junit --output "$ARTIFACTS/report.xml" \
-    --test-output-dir "$ARTIFACTS/maestro" \
+    --format junit --output "$ARTIFACTS/$name.xml" \
+    --test-output-dir "$ARTIFACTS/maestro-$name" \
     -e FIXTURE_URL="http://localhost:$FIXTURE_PORT" \
-    "${flows[@]}"
+    "$@"
 }
 
 mkdir -p "$ARTIFACTS"

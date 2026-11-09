@@ -7,8 +7,11 @@ tags:
 - extendedWaitUntil:
     visible: '.*Free Fixture Tale.*'
     timeout: 30000
-- assertVisible: '.*Locked Fixture Tale.*'
 - takeScreenshot: 01-catalog-top
+- scrollUntilVisible:
+    element: '.*Locked Fixture Tale.*'
+    direction: DOWN
+    timeout: 20000
 - scrollUntilVisible:
     element: '.*Retiring Fixture Tale.*'
     direction: DOWN
