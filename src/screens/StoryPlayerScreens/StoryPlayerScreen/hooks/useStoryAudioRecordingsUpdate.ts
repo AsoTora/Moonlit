@@ -27,8 +27,8 @@ export function useStoryAudioRecordingsUpdate(storyId: number): [boolean, () => 
         const updatedDate = new Date(updated_at_timestamp);
 
         const formattedAudioRecording = {
-          audio_url: audioRecording.audio_url,
-          cover_url: audioRecording.voices.cover_url,
+          audio_url: audioRecording.audio_absolute_url ?? audioRecording.audio_url,
+          cover_url: audioRecording.voices.cover_absolute_url ?? audioRecording.voices.cover_url,
           created_at_timestamp: createdDate.getTime(),
           duration: audioRecording.duration,
           id: audioRecording.id,

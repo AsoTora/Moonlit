@@ -3,6 +3,7 @@ export interface Voice {
   id: number;
   is_free: boolean;
   name: string;
+  cover_absolute_url?: string;
 }
 
 export interface AudioRecording {
@@ -15,6 +16,7 @@ export interface AudioRecording {
   story_id: number;
   updated_at_timestamp: string;
   voices: Voice;
+  audio_absolute_url?: string;
 }
 
 export interface Story {
@@ -35,6 +37,9 @@ export interface Story {
   small_cover_url: string;
   type: number;
   updated_at_timestamp: string;
+  full_cover_absolute_url?: string;
+  medium_cover_absolute_url?: string;
+  small_cover_absolute_url?: string;
 }
 
 export interface GetStoriesResponse {

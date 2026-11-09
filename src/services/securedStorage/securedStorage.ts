@@ -5,7 +5,6 @@ export enum SecuredStorageKey {
   awsAccountId = 'awsAccountId',
   awsConnectionString = 'awsConnectionString',
   awsSecretKey = 'awsSecretKey',
-  presignedURLsEnabled = 'presignedURLsEnabled',
 }
 
 /**

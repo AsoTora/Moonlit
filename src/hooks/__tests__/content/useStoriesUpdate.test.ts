@@ -116,6 +116,39 @@ describe('useStoriesUpdate', () => {
     expect(StoriesDB.delete).toHaveBeenCalledWith([3]);
   });
 
+  it('stores server cover URLs when the API provides them', async () => {
+    (StoriesRepository.getStories as jest.Mock).mockResolvedValue([
+      {
+        ...mockApiStories[0],
+        full_cover_absolute_url: 'https://media.example.test/url1_full',
+        medium_cover_absolute_url: 'https://media.example.test/url1_med',
+        small_cover_absolute_url: 'https://media.example.test/url1_small',
+      },
+      mockApiStories[1],
+    ]);
+    (StoriesDB.object as jest.Mock).mockReturnValue(null);
+    (StoriesDB.upsert as jest.Mock).mockResolvedValue([null, []]);
+    (StoriesDB.objects as jest.Mock).mockReturnValue([]);
+
+    const { result } = await renderHook(() => useStoriesUpdate(false));
+
+    await act(async () => {
+      await result.current[1]();
+    });
+
+    const [withServerURLs, withoutServerURLs] = (StoriesDB.upsert as jest.Mock).mock.calls[0][0];
+    expect(withServerURLs).toMatchObject({
+      full_cover_url: 'https://media.example.test/url1_full',
+      medium_cover_url: 'https://media.example.test/url1_med',
+      small_cover_url: 'https://media.example.test/url1_small',
+    });
+    expect(withoutServerURLs).toMatchObject({
+      full_cover_url: 'url2_full',
+      medium_cover_url: 'url2_med',
+      small_cover_url: 'url2_small',
+    });
+  });
+
   it('skips initial load when loadInitially is false', async () => {
     await renderHook(() => useStoriesUpdate(false));
 
