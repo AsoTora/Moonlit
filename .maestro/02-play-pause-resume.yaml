@@ -5,7 +5,9 @@ tags:
 ---
 - runFlow: subflows/open-free-story.yaml
 - takeScreenshot: 02-story-preview
-- tapOn: Listen Story
+- tapOn:
+    text: Listen Story
+    waitToSettleTimeoutMs: 1000
 - runFlow: subflows/pause-after-3s.yaml
 - evalScript: ${output.firstPause = output.pausedAt}
 - takeScreenshot: 02-paused
@@ -17,6 +19,7 @@ tags:
     label: The position stays at ${output.firstPause} while paused
 - tapOn:
     id: player-play
+    waitToSettleTimeoutMs: 1000
 - runFlow: subflows/pause-after-3s.yaml
 - assertTrue:
     condition: ${output.pausedAt > output.firstPause}

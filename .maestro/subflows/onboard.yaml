@@ -13,5 +13,8 @@ appId: com.moonlit
       visible: Continue
     times: 15
     commands:
-      - tapOn: Continue
-      - waitForAnimationToEnd
+      - tapOn:
+          text: Continue
+          waitToSettleTimeoutMs: 1000
+      - waitForAnimationToEnd:
+          timeout: 2000

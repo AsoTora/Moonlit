@@ -4,7 +4,9 @@ tags:
   - network
 ---
 - runFlow: subflows/open-free-story.yaml
-- tapOn: Listen Story
+- tapOn:
+    text: Listen Story
+    waitToSettleTimeoutMs: 1000
 - runFlow: subflows/pause-after-3s.yaml
 - runFlow:
     file: subflows/fixture-mode.yaml
@@ -13,15 +15,19 @@ tags:
       HIDE: ''
 - tapOn:
     id: header-back
+    waitToSettleTimeoutMs: 1000
 - extendedWaitUntil:
     visible: '.*Free Fixture Tale.*'
     timeout: 15000
-- tapOn: '.*Free Fixture Tale.*'
+- tapOn:
+    text: '.*Free Fixture Tale.*'
+    waitToSettleTimeoutMs: 1000
 - extendedWaitUntil:
     visible:
       id: player-play
     timeout: 15000
 - tapOn:
     id: player-play
+    waitToSettleTimeoutMs: 1000
 - runFlow: subflows/pause-after-3s.yaml
 - takeScreenshot: 06-offline-playback

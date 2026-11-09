@@ -18,6 +18,7 @@ tags:
 - swipe:
     start: 50%, 30%
     end: 50%, 85%
+    waitToSettleTimeoutMs: 1000
 - extendedWaitUntil:
     visible: '.*Free Fixture Tale.*'
     timeout: 30000

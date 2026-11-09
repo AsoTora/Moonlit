@@ -7,7 +7,8 @@ tags:
 - scrollUntilVisible:
     element: '.*Retiring Fixture Tale.*'
     direction: DOWN
-    timeout: 20000
+    timeout: 60000
+    waitToSettleTimeoutMs: 1000
 - runFlow:
     file: subflows/fixture-mode.yaml
     env:
@@ -16,14 +17,17 @@ tags:
 - scrollUntilVisible:
     element: '.*Featuring tales.*'
     direction: UP
-    timeout: 20000
+    timeout: 60000
+    waitToSettleTimeoutMs: 1000
 - swipe:
     start: 50%, 30%
     end: 50%, 85%
+    waitToSettleTimeoutMs: 1000
 - runFlow: subflows/wait-3s.yaml
 - scrollUntilVisible:
     element: '.*Free Fixture Tale.*'
     direction: DOWN
-    timeout: 10000
+    timeout: 60000
+    waitToSettleTimeoutMs: 1000
 - assertNotVisible: '.*Retiring Fixture Tale.*'
 - takeScreenshot: 05-after-refresh

@@ -4,20 +4,28 @@ tags:
   - voice
 ---
 - runFlow: subflows/open-free-story.yaml
-- tapOn: '.*Fixture Narrator Voice.*'
+- tapOn:
+    text: '.*Fixture Narrator Voice.*'
+    waitToSettleTimeoutMs: 1000
 - extendedWaitUntil:
     visible: '.*Second Narrator.*'
     timeout: 15000
 - assertVisible: '.*Premium Narrator.*'
 - takeScreenshot: 03-voice-list
-- tapOn: '.*Premium Narrator.*'
+- tapOn:
+    text: '.*Premium Narrator.*'
+    waitToSettleTimeoutMs: 1000
 - runFlow: subflows/wait-3s.yaml
 - assertVisible: '.*Second Narrator.*'
-- tapOn: '.*Second Narrator.*'
+- tapOn:
+    text: '.*Second Narrator.*'
+    waitToSettleTimeoutMs: 1000
 - extendedWaitUntil:
     visible: '.*Second Narrator Voice.*'
     timeout: 15000
-- tapOn: Listen Story
+- tapOn:
+    text: Listen Story
+    waitToSettleTimeoutMs: 1000
 - runFlow: subflows/pause-after-3s.yaml
 - takeScreenshot: 03-second-voice-paused
 - runFlow: subflows/fixture-requests.yaml

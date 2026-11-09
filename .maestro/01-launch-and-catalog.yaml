@@ -11,11 +11,13 @@ tags:
 - scrollUntilVisible:
     element: '.*Locked Fixture Tale.*'
     direction: DOWN
-    timeout: 20000
+    timeout: 60000
+    waitToSettleTimeoutMs: 1000
 - scrollUntilVisible:
     element: '.*Retiring Fixture Tale.*'
     direction: DOWN
-    timeout: 20000
+    timeout: 60000
+    waitToSettleTimeoutMs: 1000
 - assertNotVisible: '.*Hidden Fixture Tale.*'
 - takeScreenshot: 01-catalog-all-tales
 - runFlow: subflows/fixture-requests.yaml

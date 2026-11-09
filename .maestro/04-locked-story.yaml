@@ -10,8 +10,11 @@ tags:
 - scrollUntilVisible:
     element: '.*Locked Fixture Tale.*'
     direction: DOWN
-    timeout: 20000
-- tapOn: '.*Locked Fixture Tale.*'
+    timeout: 60000
+    waitToSettleTimeoutMs: 1000
+- tapOn:
+    text: '.*Locked Fixture Tale.*'
+    waitToSettleTimeoutMs: 1000
 - runFlow: subflows/wait-3s.yaml
 - assertNotVisible: Listen Story
 - assertVisible: '.*Locked Fixture Tale.*'

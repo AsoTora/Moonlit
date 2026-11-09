@@ -4,7 +4,9 @@ appId: com.moonlit
 - extendedWaitUntil:
     visible: '.*Free Fixture Tale.*'
     timeout: 30000
-- tapOn: '.*Free Fixture Tale.*'
+- tapOn:
+    text: '.*Free Fixture Tale.*'
+    waitToSettleTimeoutMs: 1000
 - extendedWaitUntil:
     visible: Listen Story
     timeout: 30000

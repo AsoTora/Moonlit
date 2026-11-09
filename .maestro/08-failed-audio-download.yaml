@@ -12,7 +12,9 @@ tags:
     env:
       MODE: audio-missing
       HIDE: ''
-- tapOn: Listen Story
+- tapOn:
+    text: Listen Story
+    waitToSettleTimeoutMs: 1000
 - extendedWaitUntil:
     visible:
       id: player-play
@@ -25,5 +27,6 @@ tags:
       HIDE: ''
 - tapOn:
     id: player-play
+    waitToSettleTimeoutMs: 1000
 - runFlow: subflows/pause-after-3s.yaml
 - takeScreenshot: 08-recovered-playback

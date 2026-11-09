@@ -12,6 +12,7 @@ appId: com.moonlit
     timeout: 20000
 - tapOn:
     id: player-pause
+    waitToSettleTimeoutMs: 1000
 - extendedWaitUntil:
     visible:
       id: player-play
