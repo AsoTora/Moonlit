@@ -1,5 +1,6 @@
 // End-to-end test values only. e2e/run-ios.sh installs this file as src/constants/auth.ts.
-export const ADAPTY_API_KEY = 'e2e-only';
+// Adapty asserts that a key starts with public_live and has at least 41 characters. This key is not valid.
+export const ADAPTY_API_KEY = 'public_live_e2e0000.000000000000000000000000';
 export const AMPLITUDE_API_KEY = 'e2e-only';
 export const ADJUST_IOS_TOKEN = 'e2e-only';
 export const ADJUST_ANDROID_TOKEN = 'e2e-only';
