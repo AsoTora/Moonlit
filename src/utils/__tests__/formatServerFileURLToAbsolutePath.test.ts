@@ -23,6 +23,12 @@ describe('formatServerFileURLToAbsolutePath', () => {
     expect(result).toBe(STORAGE_URL);
   });
 
+  it('returns absolute URLs from the server unchanged', () => {
+    const fileURL = 'https://media.example.test/Stories/Audio/story/voice.mp3';
+
+    expect(formatServerFileURLToAbsolutePath(fileURL)).toBe(fileURL);
+  });
+
   it('handles nested file paths', () => {
     const fileURL = 'stories/images/large/cover.webp';
     const result = formatServerFileURLToAbsolutePath(fileURL);

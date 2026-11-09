@@ -3,7 +3,6 @@ import React from 'react';
 import { render, waitFor } from '@testing-library/react-native';
 import { withTiming } from 'react-native-reanimated';
 
-import { useCredentialsConfig } from '@/hooks/core/useCredentialsConfig';
 import { useShowPaywallModal } from '@/hooks/navigation/useShowPaywallModal';
 import { useHandleCheckSubscription } from '@/hooks/useHandleCheckSubscription';
 import { useAppNavigation } from '@/navigation/hooks/useAppNavigation';
@@ -16,8 +15,8 @@ jest.mock('@/hooks/navigation/useShowPaywallModal', () => ({
   useShowPaywallModal: jest.fn(),
 }));
 
-jest.mock('@/hooks/core/useCredentialsConfig', () => ({
-  useCredentialsConfig: jest.fn(),
+jest.mock('@/hooks/core/useRemoveStorageCredentials', () => ({
+  useRemoveStorageCredentials: jest.fn(),
 }));
 
 jest.mock('@/hooks/useHandleCheckSubscription', () => ({
@@ -52,8 +51,7 @@ describe('SplashViewModal bootstrap gating', () => {
     );
   });
 
-  it('runs subscription check when bootstrap is settled and config is loaded', async () => {
-    (useCredentialsConfig as jest.Mock).mockReturnValue({ isConfigLoaded: true });
+  it('runs subscription check when bootstrap is settled', async () => {
     (useShowPaywallModal as jest.Mock).mockReturnValue({
       isPaywallBootstrapSettled: true,
       isPaywallReady: true,
@@ -68,7 +66,6 @@ describe('SplashViewModal bootstrap gating', () => {
   });
 
   it('does not run subscription check while bootstrap is pending', async () => {
-    (useCredentialsConfig as jest.Mock).mockReturnValue({ isConfigLoaded: true });
     (useShowPaywallModal as jest.Mock).mockReturnValue({
       isPaywallBootstrapSettled: false,
       isPaywallReady: false,
@@ -82,7 +79,6 @@ describe('SplashViewModal bootstrap gating', () => {
   });
 
   it('skips paywall and goes back when bootstrap failed and user is not subscribed', async () => {
-    (useCredentialsConfig as jest.Mock).mockReturnValue({ isConfigLoaded: true });
     (useShowPaywallModal as jest.Mock).mockReturnValue({
       isPaywallBootstrapSettled: true,
       isPaywallReady: false,
@@ -103,7 +99,6 @@ describe('SplashViewModal bootstrap gating', () => {
   });
 
   it('shows paywall when bootstrap succeeded and user is not subscribed', async () => {
-    (useCredentialsConfig as jest.Mock).mockReturnValue({ isConfigLoaded: true });
     (useShowPaywallModal as jest.Mock).mockReturnValue({
       isPaywallBootstrapSettled: true,
       isPaywallReady: true,
