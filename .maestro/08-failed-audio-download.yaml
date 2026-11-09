@@ -1,0 +1,33 @@
+# Known issue: RNFS resolves an HTTP 404 as a finished download, so the player shows the playing
+# state with no audio, pause does nothing, and the app never downloads the audio again.
+appId: com.moonlit
+name: A failed audio download does not leave the player in a broken playing state
+tags:
+  - network
+  - known-issue
+---
+- runFlow: subflows/open-free-story.yaml
+- runFlow:
+    file: subflows/fixture-mode.yaml
+    env:
+      MODE: audio-missing
+      HIDE: ''
+- tapOn:
+    text: Listen Story
+    waitToSettleTimeoutMs: 1000
+- extendedWaitUntil:
+    visible:
+      id: player-play
+    timeout: 15000
+- takeScreenshot: 08-download-failed
+- runFlow:
+    file: subflows/fixture-mode.yaml
+    env:
+      MODE: normal
+      HIDE: ''
+- tapOn:
+    id: player-play
+    waitToSettleTimeoutMs: 1000
+- runFlow: subflows/wait-3s.yaml
+- runFlow: subflows/pause-after-3s.yaml
+- takeScreenshot: 08-recovered-playback

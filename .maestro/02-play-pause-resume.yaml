@@ -1,0 +1,35 @@
+appId: com.moonlit
+name: Open a free story, download its audio, play, pause, and resume
+tags:
+  - playback
+---
+- runFlow: subflows/open-free-story.yaml
+- takeScreenshot: 02-story-preview
+- tapOn:
+    text: Listen Story
+    waitToSettleTimeoutMs: 1000
+- runFlow: subflows/pause-after-3s.yaml
+- evalScript: ${output.firstPause = output.pausedAt}
+- takeScreenshot: 02-paused
+- runFlow: subflows/wait-3s.yaml
+- copyTextFrom:
+    id: player-elapsed
+- assertTrue:
+    condition: ${maestro.copiedText == output.firstPause}
+    label: The position stays at ${output.firstPause} while paused
+- tapOn:
+    id: player-play
+    waitToSettleTimeoutMs: 1000
+- runFlow: subflows/wait-3s.yaml
+- runFlow: subflows/pause-after-3s.yaml
+- assertTrue:
+    condition: ${output.pausedAt > output.firstPause}
+    label: Playback resumed from ${output.firstPause} and reached ${output.pausedAt}
+- takeScreenshot: 02-resumed-and-paused
+- runFlow: subflows/fixture-requests.yaml
+- assertTrue:
+    condition: ${output.requests.includes('GET /media/audio/101-1.mp3')}
+    label: The app downloaded the default voice recording
+- assertTrue:
+    condition: ${output.requests.includes('POST /playNotify')}
+    label: The app reported the play to the API

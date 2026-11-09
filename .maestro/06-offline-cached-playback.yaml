@@ -1,0 +1,38 @@
+appId: com.moonlit
+name: A downloaded story plays again when the API and media host are unreachable
+tags:
+  - network
+---
+- runFlow: subflows/open-free-story.yaml
+- tapOn:
+    text: Listen Story
+    waitToSettleTimeoutMs: 1000
+- runFlow: subflows/pause-after-3s.yaml
+- evalScript: ${output.onlinePause = output.pausedAt}
+- runFlow:
+    file: subflows/fixture-mode.yaml
+    env:
+      MODE: offline
+      HIDE: ''
+- tapOn:
+    id: header-back
+    waitToSettleTimeoutMs: 1000
+- extendedWaitUntil:
+    visible: '.*Free Fixture Tale.*'
+    timeout: 15000
+- tapOn:
+    text: '.*Free Fixture Tale.*'
+    waitToSettleTimeoutMs: 1000
+- extendedWaitUntil:
+    visible:
+      id: player-play
+    timeout: 15000
+- tapOn:
+    id: player-play
+    waitToSettleTimeoutMs: 1000
+- runFlow: subflows/wait-3s.yaml
+- runFlow: subflows/pause-after-3s.yaml
+- assertTrue:
+    condition: ${output.pausedAt > output.onlinePause}
+    label: Offline playback continued from ${output.onlinePause} to ${output.pausedAt}
+- takeScreenshot: 06-offline-playback

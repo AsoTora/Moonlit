@@ -1,0 +1,7 @@
+appId: com.moonlit
+---
+- evalScript: >-
+    ${http.post(FIXTURE_URL + '/__control', {
+      body: JSON.stringify({mode: MODE, hideStoryIds: HIDE ? HIDE.split(',').map(Number) : []}),
+      headers: {'Content-Type': 'application/json'}
+    })}

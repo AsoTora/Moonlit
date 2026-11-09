@@ -1,0 +1,25 @@
+# The elapsed time after a pause comes from the native player position, not from the JavaScript timer.
+appId: com.moonlit
+---
+- extendedWaitUntil:
+    visible:
+      id: player-pause
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: player-elapsed
+      text: '00:0[3-9]|00:[1-5][0-9]|0[1-9]:[0-5][0-9]'
+    timeout: 20000
+- tapOn:
+    id: player-pause
+    waitToSettleTimeoutMs: 1000
+- extendedWaitUntil:
+    visible:
+      id: player-play
+    timeout: 10000
+- copyTextFrom:
+    id: player-elapsed
+- evalScript: ${output.pausedAt = maestro.copiedText}
+- assertTrue:
+    condition: ${output.pausedAt > '00:00'}
+    label: The native player position advanced to ${output.pausedAt}

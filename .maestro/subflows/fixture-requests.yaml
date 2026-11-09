@@ -1,0 +1,3 @@
+appId: com.moonlit
+---
+- evalScript: ${output.requests = json(http.get(FIXTURE_URL + '/__requests').body)}

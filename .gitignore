@@ -83,3 +83,7 @@ yarn-error.log
 !.yarn/sdks
 !.yarn/versions
 .yarn/install-state.gz
+
+# Maestro end-to-end runs
+/e2e/artifacts/
+/e2e/.*.backup

@@ -1,0 +1,25 @@
+appId: com.moonlit
+name: The app survives an unreachable API at first launch and recovers on refresh
+tags:
+  - network
+---
+- runFlow:
+    file: subflows/onboard.yaml
+    env:
+      MODE: api-down
+- runFlow: subflows/wait-3s.yaml
+- assertNotVisible: '.*Free Fixture Tale.*'
+- takeScreenshot: 07-api-down-home
+- runFlow:
+    file: subflows/fixture-mode.yaml
+    env:
+      MODE: normal
+      HIDE: ''
+- swipe:
+    start: 50%, 30%
+    end: 50%, 85%
+    waitToSettleTimeoutMs: 1000
+- extendedWaitUntil:
+    visible: '.*Free Fixture Tale.*'
+    timeout: 30000
+- takeScreenshot: 07-recovered

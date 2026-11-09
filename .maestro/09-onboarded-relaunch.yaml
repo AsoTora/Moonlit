@@ -1,0 +1,24 @@
+# Known issue: useHandleCheckSubscription does not handle a rejected adapty.getProfile(), so the
+# splash overlay stays mounted above Home and blocks every tap after a relaunch.
+appId: com.moonlit
+name: An onboarded listener relaunches the app and can open a story
+tags:
+  - launch
+  - known-issue
+---
+- runFlow: subflows/onboard.yaml
+- extendedWaitUntil:
+    visible: '.*Free Fixture Tale.*'
+    timeout: 30000
+- stopApp
+- launchApp
+- extendedWaitUntil:
+    visible: '.*Free Fixture Tale.*'
+    timeout: 60000
+- tapOn:
+    text: '.*Free Fixture Tale.*'
+    waitToSettleTimeoutMs: 1000
+- extendedWaitUntil:
+    visible: Listen Story
+    timeout: 30000
+- takeScreenshot: 09-relaunched-story-open

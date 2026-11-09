@@ -1,0 +1,79 @@
+name: iOS listener journeys
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ios-e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  maestro:
+    runs-on: macos-26
+    timeout-minutes: 90
+    env:
+      MAESTRO_VERSION: 2.12.1
+      MAESTRO_DRIVER_STARTUP_TIMEOUT: 300000
+      YARN_TASK_POOL_CONCURRENCY: 1
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version-file: .node-version
+      - run: corepack enable
+      - name: Show toolchain
+        run: |
+          xcodebuild -version
+          pod --version
+          java -version
+          xcrun simctl list runtimes
+      - name: Restore native build caches
+        id: native-cache
+        uses: actions/cache/restore@v6.1.0
+        with:
+          path: |
+            ios/Pods
+            ios/build
+            ~/Library/Caches/ReactNative
+            ~/Library/Caches/CocoaPods
+          key: ios-${{ hashFiles('ios/Podfile.lock', 'yarn.lock', 'ios/AIVoice.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}-${{ github.sha }}
+          restore-keys: |
+            ios-${{ hashFiles('ios/Podfile.lock', 'yarn.lock', 'ios/AIVoice.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}-
+      - name: Install Maestro
+        run: |
+          curl -fsSL "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+      - name: Build the app and run the listener journeys
+        run: e2e/run-ios.sh all
+      - name: Save native build caches
+        if: always() && steps.native-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6.1.0
+        with:
+          path: |
+            ios/Pods
+            ios/build
+            ~/Library/Caches/ReactNative
+            ~/Library/Caches/CocoaPods
+          key: ${{ steps.native-cache.outputs.cache-primary-key }}
+      - name: Upload Maestro reports and screenshots
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: ios-listener-journeys
+          path: |
+            e2e/artifacts
+            !e2e/artifacts/simulator.mp4
+            !e2e/artifacts/**/device-simulator.log
+          if-no-files-found: warn
+      - name: Upload the simulator recording
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: ios-listener-journeys-recording
+          path: e2e/artifacts/simulator.mp4
+          retention-days: 7
+          if-no-files-found: warn

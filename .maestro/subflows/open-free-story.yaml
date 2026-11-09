@@ -1,0 +1,15 @@
+appId: com.moonlit
+---
+- runFlow: onboard.yaml
+- extendedWaitUntil:
+    visible: '.*Free Fixture Tale.*'
+    timeout: 30000
+- tapOn:
+    text: '.*Free Fixture Tale.*'
+    waitToSettleTimeoutMs: 1000
+- extendedWaitUntil:
+    visible: Listen Story
+    timeout: 30000
+- extendedWaitUntil:
+    visible: '.*Fixture Narrator Voice.*'
+    timeout: 30000

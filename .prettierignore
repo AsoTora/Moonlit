@@ -6,3 +6,4 @@ android/build
 android/.gradle
 coverage
 *.lock
+e2e/artifacts

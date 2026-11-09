@@ -1,0 +1,6 @@
+appId: com.moonlit
+---
+- extendedWaitUntil:
+    visible: maestro-wait-marker-that-never-appears
+    timeout: 3000
+    optional: true

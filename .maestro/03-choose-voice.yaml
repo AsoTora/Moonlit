@@ -1,0 +1,37 @@
+appId: com.moonlit
+name: Choose another free voice, and see that a premium voice stays locked
+tags:
+  - voice
+---
+- runFlow: subflows/open-free-story.yaml
+- tapOn:
+    text: '.*Fixture Narrator Voice.*'
+    waitToSettleTimeoutMs: 1000
+- extendedWaitUntil:
+    visible: '.*Second Narrator.*'
+    timeout: 15000
+- assertVisible: '.*Premium Narrator.*'
+- takeScreenshot: 03-voice-list
+- tapOn:
+    text: '.*Premium Narrator.*'
+    waitToSettleTimeoutMs: 1000
+- runFlow: subflows/wait-3s.yaml
+- assertVisible: '.*Second Narrator.*'
+- tapOn:
+    text: '.*Second Narrator.*'
+    waitToSettleTimeoutMs: 1000
+- extendedWaitUntil:
+    visible: '.*Second Narrator Voice.*'
+    timeout: 15000
+- tapOn:
+    text: Listen Story
+    waitToSettleTimeoutMs: 1000
+- runFlow: subflows/pause-after-3s.yaml
+- takeScreenshot: 03-second-voice-paused
+- runFlow: subflows/fixture-requests.yaml
+- assertTrue:
+    condition: ${output.requests.includes('GET /media/audio/101-2.mp3')}
+    label: The app downloaded the selected voice recording
+- assertTrue:
+    condition: ${!output.requests.includes('GET /media/audio/101-3.mp3')}
+    label: The app did not download the locked premium voice

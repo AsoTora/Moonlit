@@ -1,0 +1,25 @@
+appId: com.moonlit
+name: A locked story does not open the player without a subscription
+tags:
+  - gating
+---
+- runFlow: subflows/onboard.yaml
+- extendedWaitUntil:
+    visible: '.*Free Fixture Tale.*'
+    timeout: 30000
+- scrollUntilVisible:
+    element: '.*Locked Fixture Tale.*'
+    direction: DOWN
+    timeout: 60000
+    waitToSettleTimeoutMs: 1000
+- tapOn:
+    text: '.*Locked Fixture Tale.*'
+    waitToSettleTimeoutMs: 1000
+- runFlow: subflows/wait-3s.yaml
+- assertNotVisible: Listen Story
+- assertVisible: '.*Locked Fixture Tale.*'
+- takeScreenshot: 04-locked-story-not-opened
+- runFlow: subflows/fixture-requests.yaml
+- assertTrue:
+    condition: ${!output.requests.includes('GET /media/audio/102-1.mp3')}
+    label: The app did not download audio for the locked story
