@@ -109,7 +109,7 @@ export const ScreenHeader = ({
       <View style={styles.headerContainer}>
         <View style={styles.controls} onLayout={onLayout}>
           {renderLeft === undefined ? (
-            <PressableView hitSlop={EXTRA_TOUCH_AREA} onPress={goBackHandler}>
+            <PressableView hitSlop={EXTRA_TOUCH_AREA} testID='header-back' onPress={goBackHandler}>
               <Icons.ArrowBack />
             </PressableView>
           ) : (

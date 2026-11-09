@@ -143,7 +143,9 @@ export function ProgressBar({
         </View>
 
         <View style={styles.timeContainer}>
-          <TextView style={styles.time}>{playedText}</TextView>
+          <TextView style={styles.time} testID='player-elapsed'>
+            {playedText}
+          </TextView>
           <TextView style={styles.time}>{remainedTimeText}</TextView>
         </View>
       </View>

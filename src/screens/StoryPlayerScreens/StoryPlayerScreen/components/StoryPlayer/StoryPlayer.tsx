@@ -153,9 +153,9 @@ export function StoryPlayer({
               </PressableView>
 
               {isStoryPlaying ? (
-                <Icons.PauseBig onPress={pauseStoryPlaying} />
+                <Icons.PauseBig testID='player-pause' onPress={pauseStoryPlaying} />
               ) : (
-                <Icons.PlayBig onPress={startStoryPlaying} />
+                <Icons.PlayBig testID='player-play' onPress={startStoryPlaying} />
               )}
 
               <PressableView onPress={handleGoForwardPress}>
