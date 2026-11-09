@@ -59,10 +59,21 @@ jobs:
             ~/Library/Caches/ReactNative
             ~/Library/Caches/CocoaPods
           key: ${{ steps.native-cache.outputs.cache-primary-key }}
-      - name: Upload Maestro artifacts
+      - name: Upload Maestro reports and screenshots
         if: always()
         uses: actions/upload-artifact@v7.0.2
         with:
           name: ios-listener-journeys
-          path: e2e/artifacts
+          path: |
+            e2e/artifacts
+            !e2e/artifacts/simulator.mp4
+            !e2e/artifacts/**/device-simulator.log
+          if-no-files-found: warn
+      - name: Upload the simulator recording
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: ios-listener-journeys-recording
+          path: e2e/artifacts/simulator.mp4
+          retention-days: 7
           if-no-files-found: warn
