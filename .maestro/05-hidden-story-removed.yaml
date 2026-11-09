@@ -9,6 +9,8 @@ tags:
     direction: DOWN
     timeout: 60000
     waitToSettleTimeoutMs: 1000
+- runFlow: subflows/fixture-requests.yaml
+- evalScript: ${output.storyLoads = output.requests.filter((r) => r == 'GET /stories').length}
 - runFlow:
     file: subflows/fixture-mode.yaml
     env:
@@ -24,10 +26,15 @@ tags:
     end: 50%, 85%
     waitToSettleTimeoutMs: 1000
 - runFlow: subflows/wait-3s.yaml
+- runFlow: subflows/fixture-requests.yaml
+- assertTrue:
+    condition: ${output.requests.filter((r) => r == 'GET /stories').length > output.storyLoads}
+    label: The pull to refresh loaded /stories again after the API hid story 103
 - scrollUntilVisible:
-    element: '.*Free Fixture Tale.*'
+    element: Begin your adventure
     direction: DOWN
     timeout: 60000
     waitToSettleTimeoutMs: 1000
+- assertVisible: '.*Locked Fixture Tale.*'
 - assertNotVisible: '.*Retiring Fixture Tale.*'
-- takeScreenshot: 05-after-refresh
+- takeScreenshot: 05-all-tales-after-refresh

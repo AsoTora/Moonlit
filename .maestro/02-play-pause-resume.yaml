@@ -20,6 +20,7 @@ tags:
 - tapOn:
     id: player-play
     waitToSettleTimeoutMs: 1000
+- runFlow: subflows/wait-3s.yaml
 - runFlow: subflows/pause-after-3s.yaml
 - assertTrue:
     condition: ${output.pausedAt > output.firstPause}
