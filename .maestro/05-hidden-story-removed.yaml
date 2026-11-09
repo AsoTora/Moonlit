@@ -1,0 +1,29 @@
+appId: com.moonlit
+name: A story that the API hides disappears from the cached catalog after refresh
+tags:
+  - catalog
+---
+- runFlow: subflows/onboard.yaml
+- scrollUntilVisible:
+    element: '.*Retiring Fixture Tale.*'
+    direction: DOWN
+    timeout: 20000
+- runFlow:
+    file: subflows/fixture-mode.yaml
+    env:
+      MODE: normal
+      HIDE: '103'
+- scrollUntilVisible:
+    element: '.*Featuring tales.*'
+    direction: UP
+    timeout: 20000
+- swipe:
+    start: 50%, 30%
+    end: 50%, 85%
+- runFlow: subflows/wait-3s.yaml
+- scrollUntilVisible:
+    element: '.*Free Fixture Tale.*'
+    direction: DOWN
+    timeout: 10000
+- assertNotVisible: '.*Retiring Fixture Tale.*'
+- takeScreenshot: 05-after-refresh

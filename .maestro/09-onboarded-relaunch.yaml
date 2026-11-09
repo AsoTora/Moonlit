@@ -1,0 +1,15 @@
+appId: com.moonlit
+name: An onboarded listener relaunches the app and reaches the catalog
+tags:
+  - launch
+---
+- runFlow: subflows/onboard.yaml
+- extendedWaitUntil:
+    visible: '.*Free Fixture Tale.*'
+    timeout: 30000
+- stopApp
+- launchApp
+- extendedWaitUntil:
+    visible: '.*Free Fixture Tale.*'
+    timeout: 60000
+- takeScreenshot: 09-relaunched

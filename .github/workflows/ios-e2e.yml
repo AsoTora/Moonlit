@@ -1,0 +1,56 @@
+name: iOS listener journeys
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ios-e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  maestro:
+    runs-on: macos-26
+    timeout-minutes: 90
+    env:
+      MAESTRO_VERSION: 2.12.1
+      YARN_TASK_POOL_CONCURRENCY: 1
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version-file: .node-version
+      - run: corepack enable
+      - name: Show toolchain
+        run: |
+          xcodebuild -version
+          pod --version
+          java -version
+          xcrun simctl list runtimes
+      - uses: actions/cache@v6.1.0
+        with:
+          path: |
+            ios/Pods
+            ~/Library/Caches/ReactNative
+            ~/Library/Caches/CocoaPods
+          key: pods-${{ runner.os }}-${{ hashFiles('ios/Podfile.lock', 'yarn.lock') }}
+      - uses: actions/cache@v6.1.0
+        with:
+          path: ios/build/SourcePackages
+          key: spm-${{ runner.os }}-${{ hashFiles('ios/AIVoice.xcworkspace/xcshareddata/swiftpm/Package.resolved', 'ios/Podfile.lock') }}
+      - name: Install Maestro
+        run: |
+          curl -fsSL "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+      - name: Build the app and run the listener journeys
+        run: e2e/run-ios.sh all
+      - name: Upload Maestro artifacts
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: ios-listener-journeys
+          path: e2e/artifacts
+          if-no-files-found: warn

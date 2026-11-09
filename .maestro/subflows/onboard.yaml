@@ -1,0 +1,17 @@
+appId: com.moonlit
+---
+- runFlow:
+    file: fresh-launch.yaml
+    env:
+      MODE: "${typeof MODE == 'undefined' ? 'normal' : MODE}"
+      HIDE: ''
+- extendedWaitUntil:
+    visible: Continue
+    timeout: 120000
+- repeat:
+    while:
+      visible: Continue
+    times: 15
+    commands:
+      - tapOn: Continue
+      - waitForAnimationToEnd

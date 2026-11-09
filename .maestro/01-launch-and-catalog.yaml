@@ -1,0 +1,21 @@
+appId: com.moonlit
+name: Launch, finish onboarding, and see the catalog without hidden stories
+tags:
+  - catalog
+---
+- runFlow: subflows/onboard.yaml
+- extendedWaitUntil:
+    visible: '.*Free Fixture Tale.*'
+    timeout: 30000
+- assertVisible: '.*Locked Fixture Tale.*'
+- takeScreenshot: 01-catalog-top
+- scrollUntilVisible:
+    element: '.*Retiring Fixture Tale.*'
+    direction: DOWN
+    timeout: 20000
+- assertNotVisible: '.*Hidden Fixture Tale.*'
+- takeScreenshot: 01-catalog-all-tales
+- runFlow: subflows/fixture-requests.yaml
+- assertTrue:
+    condition: ${output.requests.includes('GET /stories') && output.requests.includes('GET /config')}
+    label: The app loaded /stories and /config from the fixture API

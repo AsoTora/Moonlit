@@ -1,0 +1,30 @@
+appId: com.moonlit
+name: A failed audio download does not leave a broken cached file
+tags:
+  - network
+---
+- runFlow: subflows/open-free-story.yaml
+- runFlow:
+    file: subflows/fixture-mode.yaml
+    env:
+      MODE: audio-missing
+      HIDE: ''
+- tapOn: Listen Story
+- runFlow: subflows/wait-3s.yaml
+- takeScreenshot: 08-download-failed
+- runFlow:
+    file: subflows/fixture-mode.yaml
+    env:
+      MODE: normal
+      HIDE: ''
+- runFlow:
+    when:
+      visible:
+        id: player-pause
+    commands:
+      - tapOn:
+          id: player-pause
+- tapOn:
+    id: player-play
+- runFlow: subflows/pause-after-3s.yaml
+- takeScreenshot: 08-recovered-playback

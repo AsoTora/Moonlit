@@ -1,0 +1,12 @@
+appId: com.moonlit
+---
+- evalScript: "${http.request(FIXTURE_URL + '/__control', {method: 'DELETE'})}"
+- runFlow:
+    when:
+      true: ${MODE != 'normal'}
+    file: fixture-mode.yaml
+- clearKeychain
+- launchApp:
+    clearState: true
+    permissions:
+      all: deny
